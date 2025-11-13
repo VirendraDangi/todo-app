@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
-
-
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Todo = () => {
@@ -18,10 +15,13 @@ const Todo = () => {
     priority: "",
   });
 
- 
   const fetchTodos = async () => {
     try {
-      const res = await axios.get(API_URL, {withCredentials:true}, { params: filters },);
+      const res = await axios.get(
+        API_URL,
+        { withCredentials: true },
+        { params: filters }
+      );
       setTodos(res.data.todos);
     } catch (error) {
       console.error("Error fetching todos:", error);
@@ -32,14 +32,13 @@ const Todo = () => {
     fetchTodos();
   }, [filters]);
 
-
-  const createTodo = async () => { 
+  const createTodo = async () => {
     if (!title.trim()) {
       alert("Title cannot be empty");
       return;
     }
     try {
-      await axios.post(API_URL, { title },{withCredentials:true});
+      await axios.post(API_URL, { title }, { withCredentials: true });
       setTitle("");
       fetchTodos();
       alert("Todo created successfully!");
@@ -49,10 +48,9 @@ const Todo = () => {
     }
   };
 
-
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`,{withCredentials:true});
+      await axios.delete(`${API_URL}/${id}`, { withCredentials: true });
       fetchTodos();
       alert("Todo deleted successfully!");
     } catch (error) {
@@ -61,43 +59,40 @@ const Todo = () => {
     }
   };
 
+  const toggleComplete = async (todo) => {
+    try {
+      await axios.patch(
+        `${API_URL}/${todo._id}`,
+        { completed: !todo.completed },
+        { withCredentials: true }
+      );
+      fetchTodos();
+    } catch (error) {
+      console.error("Error updating todo:", error);
+      alert("Error updating todo");
+    }
+  };
 
-const toggleComplete = async (todo) => {
-  try {
-    await axios.patch(
-      `${API_URL}/${todo._id}`,
-      { completed: !todo.completed },
-      { withCredentials: true }  
-    );
-    fetchTodos();
-  } catch (error) {
-    console.error("Error updating todo:", error);
-    alert("Error updating todo");
-  }
-};
-
-
-const editTodo = async () => {
-  if (!title.trim()) {
-    alert("Title cannot be empty");
-    return;
-  }
-  try {
-    await axios.patch(
-      `${API_URL}/${editingId}`,
-      { title },
-      { withCredentials: true }  
-    );
-    setEditingId(null);
-    setTitle("");
-    fetchTodos();
-    alert("Todo updated successfully!");
-  } catch (error) {
-    console.error("Error updating todo:", error);
-    alert("Error updating todo");
-  }
-};
-
+  const editTodo = async () => {
+    if (!title.trim()) {
+      alert("Title cannot be empty");
+      return;
+    }
+    try {
+      await axios.patch(
+        `${API_URL}/${editingId}`,
+        { title },
+        { withCredentials: true }
+      );
+      setEditingId(null);
+      setTitle("");
+      fetchTodos();
+      alert("Todo updated successfully!");
+    } catch (error) {
+      console.error("Error updating todo:", error);
+      alert("Error updating todo");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -179,17 +174,17 @@ const editTodo = async () => {
               </div>
 
               <div className="flex gap-3 text-gray-600">
-                 <FaEdit
+                <FaEdit
                   onClick={() => {
                     setEditingId(todo._id);
                     setTitle(todo.title);
                   }}
                   className="cursor-pointer hover:text-blue-500"
-                /> 
-               <FaTrash
+                />
+                <FaTrash
                   onClick={() => deleteTodo(todo._id)}
                   className="cursor-pointer hover:text-red-500"
-                /> 
+                />
               </div>
             </div>
           ))
