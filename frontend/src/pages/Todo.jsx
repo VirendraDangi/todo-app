@@ -98,7 +98,7 @@ const Todo = () => {
     <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">📝 Todo Manager</h1>
 
-      {/* Create / Update Form */}
+    
       <div className="flex gap-2 w-full max-w-xl mb-6">
         <input
           type="text"
@@ -115,7 +115,7 @@ const Todo = () => {
         </button>
       </div>
 
-      {/* Filters */}
+
       <div className="flex flex-wrap gap-3 mb-6">
         <select
           className="border px-3 py-2 rounded-md"
@@ -148,7 +148,7 @@ const Todo = () => {
         </select>
       </div>
 
-      {/* Todo List */}
+
       <div className="w-full max-w-xl bg-white rounded-lg shadow-md p-4">
         {todos.length === 0 ? (
           <p className="text-center text-gray-500">No todos found</p>
